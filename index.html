@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Downlight · Control logístico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<main id="acceso" class="acceso">
+  <form class="card" id="form" autocomplete="off">
+    <h1>Control logístico</h1>
+    <p class="aviso" style="font-size:.95rem">Downlight · acceso de lectura</p>
+    <label class="campo" for="clave">Clave de lectura
+      <input type="password" id="clave" autocomplete="current-password" required autofocus>
+    </label>
+    <label class="check"><input type="checkbox" id="recordar"> Recordar en este equipo</label>
+    <div class="error" id="error" role="alert"></div>
+    <button class="btn" id="entrar" type="submit">Entrar</button>
+  </form>
+  <a href="cargador.html" style="position:fixed;bottom:.8rem;left:0;right:0;text-align:center;font-size:.75rem;color:var(--taupe);opacity:.7">Administración</a>
+</main>
+<div class="wrap oculto" id="app"></div>
+<p class="pie wrap oculto" id="pie">Downlight · Control logístico. Los datos se descifran en tu navegador; la clave no se envía a ningún servidor. · <a href="cargador.html" style="color:inherit;opacity:.7">Administración</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  const $ = id => document.getElementById(id);
+  let bytes = null;
+  function salir() { DL.ls.del('dl_clave'); location.reload(); }
+  async function abrir(clave, recordar, silencioso) {
+    $('error').textContent = ''; $('entrar').disabled = true;
+    try {
+      if (!bytes) bytes = await DL.leerEnc();
+      const datos = await DL.descifrar(bytes, clave);
+      if (recordar) DL.ls.set('dl_clave', clave);
+      $('acceso').classList.add('oculto'); $('app').classList.remove('oculto'); $('pie').classList.remove('oculto');
+      Dashboard.mount($('app'), datos, { logout: salir });
+      return true;
+    } catch (e) {
+      if (e.message === 'clave') { if (silencioso) DL.ls.del('dl_clave'); else $('error').textContent = 'Clave incorrecta'; }
+      else $('error').textContent = silencioso ? '' : 'No se pudieron leer los datos. Intenta de nuevo en un minuto.';
+      return false;
+    } finally { $('entrar').disabled = false; }
+  }
+  $('form').addEventListener('submit', async e => { e.preventDefault(); const c = $('clave').value; if (!c) return; await abrir(c, $('recordar').checked, false); $('clave').value = ''; });
+  const guardada = DL.ls.get('dl_clave'); if (guardada) abrir(guardada, false, true);
+})();
+</script>
+</body>
+</html>
