@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Downlight · Panel de carga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<main id="puerta" class="acceso">
+  <form class="card" id="f-puerta" autocomplete="off">
+    <h1>Panel de carga</h1>
+    <p class="aviso" style="font-size:.95rem">Solo administrador</p>
+    <label class="campo" for="clave-carga">Clave de carga
+      <input type="password" id="clave-carga" autocomplete="off" required autofocus>
+    </label>
+    <div class="error" id="err-puerta" role="alert"></div>
+    <button class="btn" type="submit" id="b-puerta">Entrar</button>
+  </form>
+</main>
+
+<div class="wrap oculto" id="panel">
+  <header class="top"><div><h1>Panel de carga</h1><div class="meta">El Excel se procesa en este navegador; no se sube a ningún servidor.</div></div></header>
+
+  <section class="card paso" id="s-conn">
+    <h2>Conexión con GitHub</h2>
+    <p class="aviso">Se guarda solo en este navegador. El token nunca va en el código ni en el repositorio.</p>
+    <div class="fila">
+      <label class="campo" for="gh-token">Token (fine-grained, Contents: Read and write)<input type="password" id="gh-token" autocomplete="off"></label>
+      <label class="campo" for="gh-owner">Owner<input type="text" id="gh-owner" autocomplete="off"></label>
+      <label class="campo" for="gh-repo">Repositorio<input type="text" id="gh-repo" autocomplete="off"></label>
+      <label class="campo" for="gh-rama">Rama<input type="text" id="gh-rama" value="main" autocomplete="off"></label>
+    </div>
+    <div class="acciones"><button class="btn" type="button" id="b-guardar">Guardar conexión</button><button class="btn sec" type="button" id="b-olvidar">Olvidar token</button></div>
+    <div class="estado" id="estado-conn" aria-live="polite"></div>
+  </section>
+  <section class="card paso">
+    <h2>1. Elegir el Excel</h2>
+    <input type="file" id="archivo" accept=".xlsm,.xlsx" aria-label="Archivo Excel">
+    <div class="barra" style="margin-top:.8rem"><i id="progreso"></i></div>
+    <div class="estado" id="estado-proc" aria-live="polite"></div>
+  </section>
+
+  <section class="card paso oculto" id="s-valid">
+    <h2>2. Validación</h2>
+    <div id="valid"></div>
+  </section>
+
+  <section class="paso oculto" id="s-prev">
+    <h2 style="margin-bottom:.6rem">3. Vista previa con los datos nuevos</h2>
+    <div id="preview"></div>
+  </section>
+
+  <section class="card paso oculto" id="s-pub">
+    <h2>4. Publicar</h2>
+    <label class="check"><input type="checkbox" id="reviso"> Revisé los datos</label>
+    <div class="fila">
+      <label class="campo" for="lectura1">Clave de lectura (la que usará la gerencia)<input type="password" id="lectura1" autocomplete="new-password"></label>
+      <label class="campo" for="lectura2">Repetir clave de lectura<input type="password" id="lectura2" autocomplete="new-password"></label>
+    </div>
+    <div class="aviso" id="av-clave"></div>
+    <div class="acciones">
+      <button class="btn" type="button" id="b-publicar" disabled>Publicar en GitHub</button>
+      
+    </div>
+    <div class="estado" id="estado-pub" aria-live="polite"></div>
+  </section>
+
+  <section class="card paso" id="s-rest">
+    <h2>Restaurar versión anterior</h2>
+    <p class="aviso">Vuelve a publicar una copia guardada en <code>data/historial/</code>. Conserva su cifrado original, así que se abre con la clave de lectura que tenía en ese momento. Usa la conexión con GitHub de más arriba.</p>
+    <button class="btn sec" type="button" id="b-hist">Restaurar versión anterior</button>
+    <div id="lista-hist"></div>
+    <div class="estado" id="estado-rest" aria-live="polite"></div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="assets/common.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/loader.js"></script>
+</body>
+</html>
