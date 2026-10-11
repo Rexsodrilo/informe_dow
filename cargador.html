@@ -25,21 +25,12 @@
 <div class="wrap oculto" id="panel">
   <header class="top"><div><h1>Panel de carga</h1><div class="meta">El Excel se procesa en este navegador; no se sube a ningún servidor.</div></div></header>
 
-  <section class="card paso" id="s-conn">
-    <h2>Conexión con GitHub</h2>
-    <p class="aviso">Se guarda solo en este navegador. El token nunca va en el código ni en el repositorio.</p>
-    <div class="fila">
-      <label class="campo" for="gh-token">Token (fine-grained, Contents: Read and write)<input type="password" id="gh-token" autocomplete="off"></label>
-      <label class="campo" for="gh-owner">Owner<input type="text" id="gh-owner" autocomplete="off"></label>
-      <label class="campo" for="gh-repo">Repositorio<input type="text" id="gh-repo" autocomplete="off"></label>
-      <label class="campo" for="gh-rama">Rama<input type="text" id="gh-rama" value="main" autocomplete="off"></label>
-    </div>
-    <div class="acciones"><button class="btn" type="button" id="b-guardar">Guardar conexión</button><button class="btn sec" type="button" id="b-olvidar">Olvidar token</button></div>
-    <div class="estado" id="estado-conn" aria-live="polite"></div>
-  </section>
   <section class="card paso">
-    <h2>1. Elegir el Excel</h2>
-    <input type="file" id="archivo" accept=".xlsm,.xlsx" aria-label="Archivo Excel">
+    <h2>1. Cargar el Excel y crear los datos</h2>
+    <p class="aviso">Elige el archivo .xlsm o .xlsx. Se lee y calcula aquí mismo; después podrás revisar y publicar.</p>
+    <label class="btn" for="archivo" style="display:inline-block">Elegir Excel y crear datos</label>
+    <input type="file" id="archivo" class="sr" accept=".xlsm,.xlsx">
+    <span class="aviso" id="nombre-archivo" style="margin-left:.6rem"></span>
     <div class="barra" style="margin-top:.8rem"><i id="progreso"></i></div>
     <div class="estado" id="estado-proc" aria-live="polite"></div>
   </section>
@@ -67,6 +58,19 @@
       
     </div>
     <div class="estado" id="estado-pub" aria-live="polite"></div>
+  </section>
+
+  <section class="card paso" id="s-conn">
+    <h2>Conexión con GitHub</h2>
+    <p class="aviso">Se necesita para publicar y restaurar. Se guarda solo en este navegador; el token nunca va en el código ni en el repositorio.</p>
+    <div class="fila">
+      <label class="campo" for="gh-token">Token (fine-grained, Contents: Read and write)<input type="password" id="gh-token" autocomplete="off"></label>
+      <label class="campo" for="gh-owner">Owner<input type="text" id="gh-owner" autocomplete="off"></label>
+      <label class="campo" for="gh-repo">Repositorio<input type="text" id="gh-repo" autocomplete="off"></label>
+      <label class="campo" for="gh-rama">Rama<input type="text" id="gh-rama" value="main" autocomplete="off"></label>
+    </div>
+    <div class="acciones"><button class="btn" type="button" id="b-guardar">Guardar conexión</button><button class="btn sec" type="button" id="b-olvidar">Olvidar token</button></div>
+    <div class="estado" id="estado-conn" aria-live="polite"></div>
   </section>
 
   <section class="card paso" id="s-rest">
